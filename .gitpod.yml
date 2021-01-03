@@ -3,4 +3,7 @@ tasks:
     command: ./gradlew check
 vscode:
   extensions:
-    - pkief.material-icon-theme@4.4.0:rUeW9VprKCFBXYTvg+AimA==
+    - redhat.java
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-debug
+    - pkief.material-icon-theme

@@ -118,5 +118,13 @@ Create a new file `.gitpod.yml` with the following content.
 tasks:
   - init: ./gradlew build
     command: ./gradlew check
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-debug
+    - pkief.material-icon-theme
 ```
-Optionally add Material Icon Theme extension by PKief to the project.
+*Note: Using the latest redhat.java and vscjava.vscode-java-dependency plugins to fix an issue with the JAVA PROJECTS panel on gitpod.*
+
+*Optionally add Material Icon Theme extension by PKief to the project.*
