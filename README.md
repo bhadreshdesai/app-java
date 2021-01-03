@@ -120,10 +120,10 @@ tasks:
     command: ./gradlew check
 vscode:
   extensions:
-    - pkief.material-icon-theme
     - redhat.java
     - vscjava.vscode-java-dependency
     - vscjava.vscode-java-debug
+    - pkief.material-icon-theme
 ```
 *Note: Using the latest redhat.java and vscjava.vscode-java-dependency plugins to fix an issue with the JAVA PROJECTS panel on gitpod.*
 
