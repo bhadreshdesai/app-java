@@ -1,0 +1,9 @@
+tasks:
+  - init: ./gradlew build
+    command: ./gradlew check
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-debug
+    - pkief.material-icon-theme
