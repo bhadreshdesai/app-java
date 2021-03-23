@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.1'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'org.springframework.boot' version '2.4.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.22"
@@ -10,18 +10,26 @@ group = 'bdd.demo.'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+def versions = [
+		openapi: '1.5.4',
+		cucumber: '6.9.1'
+]
+
+sourceSets {
+	intTest {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
 	}
+}
+
+configurations {
+	compileOnly.extendsFrom annotationProcessor
+	intTestImplementation.extendsFrom implementation
+	intTestRuntimeOnly.extendsFrom runtimeOnly
 }
 
 repositories {
 	mavenCentral()
-}
-
-ext {
-	ver_cucumber = '6.9.1'
 }
 
 dependencies {
@@ -35,11 +43,20 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "io.cucumber:cucumber-java:${ver_cucumber}"
-	testImplementation "io.cucumber:cucumber-junit-platform-engine:${ver_cucumber}"
+	testImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
+	testImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
 }
 
-test {
+task integrationTest(type: Test) {
+	description = 'Runs integration tests.'
+	group = 'verification'
+
+	testClassesDirs = sourceSets.intTest.output.classesDirs
+	classpath = sourceSets.intTest.runtimeClasspath
+	shouldRunAfter test
+}
+
+tasks.withType(Test) {
 	useJUnitPlatform()
 }
 
@@ -57,4 +74,4 @@ cucumberReports {
     reports = files("${buildDir}/reports/cucumber/cucumber-report.json")
 }
 
-check.dependsOn jacocoTestReport
+check.dependsOn integrationTest, jacocoTestReport
