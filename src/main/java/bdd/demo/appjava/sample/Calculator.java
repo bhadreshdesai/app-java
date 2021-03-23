@@ -9,4 +9,12 @@ public class Calculator {
     public Integer subtract(Integer num, Integer from) {
 		return from - num;
 	}
+
+	public Integer multiply(Integer num1, Integer num2) {
+        return num1 * num2;
+    }
+
+    public Integer divide(Integer num1, Integer num2) {
+        return num1 / num2;
+    }
 }

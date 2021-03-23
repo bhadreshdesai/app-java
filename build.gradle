@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 	id 'jacoco'
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.22"
+	id 'idea'
 }
 
 group = 'bdd.demo.'
@@ -16,16 +17,23 @@ def versions = [
 ]
 
 sourceSets {
-	intTest {
+	testInt {
 		compileClasspath += sourceSets.main.output
 		runtimeClasspath += sourceSets.main.output
 	}
 }
 
+idea {
+	module {
+		testSourceDirs += project.sourceSets.testInt.java.srcDirs
+		testSourceDirs += project.sourceSets.testInt.resources.srcDirs
+	}
+}
+
 configurations {
 	compileOnly.extendsFrom annotationProcessor
-	intTestImplementation.extendsFrom implementation
-	intTestRuntimeOnly.extendsFrom runtimeOnly
+	testIntImplementation.extendsFrom implementation
+	testIntRuntimeOnly.extendsFrom runtimeOnly
 }
 
 repositories {
@@ -43,16 +51,18 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
-	testImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
+
+	testIntImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testIntImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
+	testIntImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
 }
 
-task integrationTest(type: Test) {
+task testInt(type: Test) {
 	description = 'Runs integration tests.'
 	group = 'verification'
 
-	testClassesDirs = sourceSets.intTest.output.classesDirs
-	classpath = sourceSets.intTest.runtimeClasspath
+	testClassesDirs = sourceSets.testInt.output.classesDirs
+	classpath = sourceSets.testInt.runtimeClasspath
 	shouldRunAfter test
 }
 
@@ -61,6 +71,22 @@ tasks.withType(Test) {
 }
 
 jacocoTestReport {
+	// The JaCoCo plugin adds a JacocoTaskExtension extension to all tasks of type Test.
+	// Use task state to include or not task execution data
+	// https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html
+	// This declaration will be used as a closure, notice there no wrapping parenthesis
+	//executionData tasks.withType(Test).findAll { it.state.executed }
+
+	//executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
+
+	// https://github.com/gradle/gradle/issues/11034
+	// wrap the query in a closure, so that it is deferred until the task starts
+	//executionData { tasks.withType(Test).findAll { it.state.executed }.jacoco.destinationFile }
+
+	// works
+	executionData(test, testInt)
+
+
 	reports {
 		xml.enabled = true
 		// HTML report: build/reports/jacoco/test/html/index.html
@@ -74,4 +100,4 @@ cucumberReports {
     reports = files("${buildDir}/reports/cucumber/cucumber-report.json")
 }
 
-check.dependsOn integrationTest, jacocoTestReport
+check.dependsOn testInt, jacocoTestReport
