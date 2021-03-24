@@ -68,38 +68,49 @@ task testInt(type: Test) {
 
 tasks.withType(Test) {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+	//testLogging.showStandardStreams = true
 	finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
+
+
 jacocoTestReport {
 	// https://stackoverflow.com/questions/19025138/gradle-how-to-generate-coverage-report-for-integration-test-using-jacoco
-	//println "*************** Print from jacocoTestReport"
 	executionData {
 		tasks.withType(Test).findAll {
 			it.jacoco.destinationFile.exists()
 		}*.jacoco.destinationFile
 	}
 
-	// The JaCoCo plugin adds a JacocoTaskExtension extension to all tasks of type Test.
-	// Use task state to include or not task execution data
-	// https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html
-	// This declaration will be used as a closure, notice there no wrapping parenthesis
-	//executionData tasks.withType(Test).findAll { it.state.executed }
-
-	//executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
-
-	// https://github.com/gradle/gradle/issues/11034
-	// wrap the query in a closure, so that it is deferred until the task starts
-	//executionData { tasks.withType(Test).findAll { it.state.executed }.jacoco.destinationFile }
-
-	// works
-	//executionData(test, testInt)
-
-
 	reports {
 		xml.enabled = true
 		// HTML report: build/reports/jacoco/test/html/index.html
 		html.enabled = true
+	}
+}
+
+jacocoTestCoverageVerification {
+	dependsOn testInt
+	executionData {
+		tasks.withType(Test).findAll {
+			it.jacoco.destinationFile.exists()
+		}*.jacoco.destinationFile
+	}
+	violationRules {
+		rule {
+			element = 'CLASS'
+			excludes = [
+					'bdd.demo.appjava.DemoApplication'
+			]
+			limit {
+				counter = 'INSTRUCTION'
+				value = 'COVEREDRATIO'
+				minimum = 0.95
+			}
+		}
 	}
 }
 
@@ -109,6 +120,4 @@ cucumberReports {
     reports = files("${buildDir}/reports/cucumber/cucumber-report.json")
 }
 
-check.dependsOn testInt
-
-//check.dependsOn testInt, jacocoTestReport
+check.dependsOn testInt, jacocoTestCoverageVerification
