@@ -60,7 +60,7 @@ dependencies {
 task testInt(type: Test) {
 	description = 'Runs integration tests.'
 	group = 'verification'
-
+	outputs.upToDateWhen { false }
 	testClassesDirs = sourceSets.testInt.output.classesDirs
 	classpath = sourceSets.testInt.runtimeClasspath
 	shouldRunAfter test
@@ -68,9 +68,18 @@ task testInt(type: Test) {
 
 tasks.withType(Test) {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
 jacocoTestReport {
+	// https://stackoverflow.com/questions/19025138/gradle-how-to-generate-coverage-report-for-integration-test-using-jacoco
+	//println "*************** Print from jacocoTestReport"
+	executionData {
+		tasks.withType(Test).findAll {
+			it.jacoco.destinationFile.exists()
+		}*.jacoco.destinationFile
+	}
+
 	// The JaCoCo plugin adds a JacocoTaskExtension extension to all tasks of type Test.
 	// Use task state to include or not task execution data
 	// https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html
@@ -84,7 +93,7 @@ jacocoTestReport {
 	//executionData { tasks.withType(Test).findAll { it.state.executed }.jacoco.destinationFile }
 
 	// works
-	executionData(test, testInt)
+	//executionData(test, testInt)
 
 
 	reports {
@@ -100,4 +109,6 @@ cucumberReports {
     reports = files("${buildDir}/reports/cucumber/cucumber-report.json")
 }
 
-check.dependsOn testInt, jacocoTestReport
+check.dependsOn testInt
+
+//check.dependsOn testInt, jacocoTestReport
