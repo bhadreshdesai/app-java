@@ -16,6 +16,7 @@ Demo java application using Spring Boot
   - [gitpod project setup](#gitpod-project-setup)
 - [Setup Behavior Driven Development using Cucumber](#setup-behavior-driven-development-using-cucumber)
   - [Setup Cucumber Reports](#setup-cucumber-reports)
+- [Reference Links](#reference-links)
 
 ## Introduction
 Create a project using online tools.
@@ -321,3 +322,9 @@ Run the test by exexuting the following command in the gitpod terminal.
 ./gradlew check
 ```
 Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overview-features.html`
+
+# Reference Links
+[Spring Boot 2.0 — Project Structure and Best Practices (Part 2)](https://medium.com/the-resonant-web/spring-boot-2-0-project-structure-and-best-practices-part-2-7137bdcba7d3)
+[Using Cucumber DataTable For CRUD Operations](https://laptrinhx.com/using-cucumber-datatable-for-crud-operations-4058963103/)
+[Writing Integration Tests for Rest Services with Spring Boot](https://www.springboottutorial.com/integration-testing-for-spring-boot-rest-services)
+[https://github.com/cucumber/cucumber-jvm/tree/main/spring](https://github.com/cucumber/cucumber-jvm/tree/main/spring)
