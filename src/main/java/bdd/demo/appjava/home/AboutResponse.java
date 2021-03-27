@@ -4,7 +4,7 @@ package bdd.demo.appjava.home;
 @lombok.Builder
 @lombok.Data
 @lombok.NoArgsConstructor
-public class HomeResponse {
+public class AboutResponse {
     private String name;
     private String shortname;
     private String version;

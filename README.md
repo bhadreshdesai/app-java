@@ -325,6 +325,12 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 
 # Reference Links
 [Spring Boot 2.0 — Project Structure and Best Practices (Part 2)](https://medium.com/the-resonant-web/spring-boot-2-0-project-structure-and-best-practices-part-2-7137bdcba7d3)
+
+[How to test a controller in Spring Boot - a practical guide](https://thepracticaldeveloper.com/guide-spring-boot-controller-tests/)
+[Source](https://github.com/mechero/spring-boot-testing-strategies/tree/master/src/test/java/io/tpd/superheroes/controller)
+
 [Using Cucumber DataTable For CRUD Operations](https://laptrinhx.com/using-cucumber-datatable-for-crud-operations-4058963103/)
+
 [Writing Integration Tests for Rest Services with Spring Boot](https://www.springboottutorial.com/integration-testing-for-spring-boot-rest-services)
+
 [https://github.com/cucumber/cucumber-jvm/tree/main/spring](https://github.com/cucumber/cucumber-jvm/tree/main/spring)
