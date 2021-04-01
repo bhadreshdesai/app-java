@@ -34,6 +34,7 @@ public class HomeController {
         return AboutResponse.builder().name(name).shortname(shortname).version(version).build();
     }
 
+
     @GetMapping(value = "/greetings/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GreetingsResponse greetings(@PathVariable("id") Long id
             //, @RequestHeader(value = "accept-language") String language
@@ -43,4 +44,17 @@ public class HomeController {
         LOG.info(locale.toString());
         return GreetingsResponse.builder().id(id).greetings(I18N("greetings")).mood(I18N("mood", new Object[]{mood})).serverTime(LocalDateTime.now()).build();
     }
+
+/*
+    @GetMapping(value = "/greetings/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String greetings(@PathVariable("id") Long id
+                                          // , @RequestHeader(value = "accept-language") String language
+            , Locale locale, @RequestParam Optional<String> firstName,
+                                          @RequestParam Optional<String> lastName,
+                                          @RequestParam(defaultValue = "good") String mood) {
+        return "Greetings";
+    }
+
+ */
+
 }

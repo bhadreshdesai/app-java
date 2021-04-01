@@ -12,10 +12,16 @@ import java.util.Locale;
 public class MessageTranslator {
    private static MessageSource messageSource;
 
+   /**
+    * Autowired with MessageSource to initialise the messageSource static field.
+    * The messageSource static field is then used by the static functions
+    * @param messageSource
+    */
    @Autowired
    MessageTranslator(MessageSource messageSource) {
       MessageTranslator.messageSource = messageSource;
    }
+
    public static String I18N(String msgCode, @Nullable Object[] args, Locale locale) {
       return messageSource.getMessage(msgCode, args, locale);
    }
