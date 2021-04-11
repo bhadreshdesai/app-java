@@ -330,6 +330,7 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 [Source](https://github.com/mechero/spring-boot-testing-strategies/tree/master/src/test/java/io/tpd/superheroes/controller)
 
 [Using Cucumber DataTable For CRUD Operations](https://laptrinhx.com/using-cucumber-datatable-for-crud-operations-4058963103/)
+[Source](https://github.com/bcarun/cucumber-samples/tree/master/crud-using-datatable)
 
 [Writing Integration Tests for Rest Services with Spring Boot](https://www.springboottutorial.com/integration-testing-for-spring-boot-rest-services)
 

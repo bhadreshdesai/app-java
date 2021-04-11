@@ -11,14 +11,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 
+// https://github.com/dariawantech/spring-boot-rest-springdoc-openapi/blob/master/src/main/java/com/dariawan/contactapp/controller/ContactController.java
 @Tag(name = "Employees")
 @RestController
 @RequestMapping(path = "/api/employees")
 public class EmployeeController {
-    private static Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity create(@RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Employee> create(@RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
         logger.info(employee.toString());
         //Long id = employeeService.create(employee);
         Long id = 1L;
