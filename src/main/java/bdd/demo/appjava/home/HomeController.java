@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 
+import static bdd.demo.appjava.home.Constants.*;
 import static bdd.demo.appjava.utils.MessageTranslator.I18N;
 
-@Tag(name = "Home")
+@Tag(name = TAG_HOME)
 @RestController
-@RequestMapping(path = "/home")
+@RequestMapping(path = APIPATH_HOME)
 @Slf4j
 public class HomeController {
 
@@ -25,14 +26,14 @@ public class HomeController {
     @Value("${app.version}")
     private String version;
 
-    @GetMapping(value = "/about", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = APIPATH_GET_ABOUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public AboutResponse about() {
         log.info("Home.about called");
         return AboutResponse.builder().name(name).shortname(shortname).version(version).build();
     }
 
 
-    @GetMapping(value = "/greetings/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = APIPATH_GET_GREETINGS, produces = MediaType.APPLICATION_JSON_VALUE)
     public GreetingsResponse greetings(@PathVariable("id") Long id
                                        //, @RequestHeader(value = "accept-language") String language
             , Locale locale

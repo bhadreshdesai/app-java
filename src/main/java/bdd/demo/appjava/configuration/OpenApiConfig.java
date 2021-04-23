@@ -1,11 +1,14 @@
 package bdd.demo.appjava.configuration;
 
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
+    @Value("${app.name}")
+    private String appName;
     /***
      * Set the server url to / so it the Try it out from browser with https works.
      * Without this the Generated server url is http:// instead of https:// See
@@ -18,9 +21,9 @@ public class OpenApiConfig {
     // return new OpenAPI().addServersItem(new Server().url("/"));
     // }
     @Bean
-    public OpenApiCustomiser serverOpenApiCustomiser1() {
+    public OpenApiCustomiser serverOpenApiCustomiser() {
         return openAPI -> openAPI.getServers().forEach(server -> {
-            server.setDescription("Demo Java Application");
+            server.setDescription(appName);
             // Set server.forward-headers-strategy=framework in application.properties
             // TODO: Find a better way to get https:// instead of http://
             // https://github.com/springdoc/springdoc-openapi/issues/751#issuecomment-650734224
