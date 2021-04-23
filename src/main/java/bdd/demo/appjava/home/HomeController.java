@@ -34,7 +34,7 @@ public class HomeController {
 
     @GetMapping(value = "/greetings/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GreetingsResponse greetings(@PathVariable("id") Long id
-            //, @RequestHeader(value = "accept-language") String language
+                                       //, @RequestHeader(value = "accept-language") String language
             , Locale locale
             , @RequestParam Optional<String> firstName, @RequestParam Optional<String> lastName, @RequestParam(defaultValue = "good") String mood) {
         log.info("Home.greetings called");

@@ -1,14 +1,11 @@
 package bdd.demo.appjava.api;
 
 import bdd.demo.appjava.CucumberTestContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.LocalServerPort;
 
 public class AbstractApiStepDef {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractApiStepDef.class);
 
-    private CucumberTestContext CONTEXT = CucumberTestContext.CONTEXT;
+    private final CucumberTestContext CONTEXT = CucumberTestContext.CONTEXT;
 
     @LocalServerPort
     private int port;

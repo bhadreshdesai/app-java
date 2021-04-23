@@ -6,8 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -16,11 +14,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 @Slf4j
-public class EmployeeStepDef  {
-    @LocalServerPort
-    private int port;
+public class EmployeeStepDef {
     TestRestTemplate restTemplate = new TestRestTemplate();
     HttpHeaders headers = new HttpHeaders();
+    @LocalServerPort
+    private int port;
 
     private String createURLWithPort(String uri) {
         return "http://localhost:" + port + uri;

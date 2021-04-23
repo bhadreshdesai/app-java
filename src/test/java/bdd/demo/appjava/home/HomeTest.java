@@ -1,9 +1,8 @@
 package bdd.demo.appjava.home;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Slf4j
 public class HomeTest {
-    private static final Logger LOG = LoggerFactory.getLogger(HomeTest.class);
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
@@ -36,7 +35,7 @@ public class HomeTest {
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn().getResponse();
         String responseText = response.getContentAsString();
-        LOG.info("testGreetings response: " + responseText);
+        log.info("testGreetings response: " + responseText);
         GreetingsResponse greetingsResponse = objectMapper.readValue(responseText, GreetingsResponse.class);
         assertEquals(1, greetingsResponse.getId());
         assertEquals("Hello", greetingsResponse.getGreetings());
@@ -50,7 +49,7 @@ public class HomeTest {
                         .header("Accept-Language", "es-ES")
         ).andExpect(status().isOk()).andReturn().getResponse();
         String responseText = response.getContentAsString();
-        LOG.info("testGreetings response: " + responseText);
+        log.info("testGreetings response: " + responseText);
         GreetingsResponse greetingsResponse = objectMapper.readValue(responseText, GreetingsResponse.class);
         assertEquals(1, greetingsResponse.getId());
         assertEquals("Hola", greetingsResponse.getGreetings());
@@ -64,7 +63,7 @@ public class HomeTest {
                         .header("Accept-Language", "es-ES")
         ).andExpect(status().isOk()).andReturn().getResponse();
         String responseText = response.getContentAsString();
-        LOG.info("testGreetings response: " + responseText);
+        log.info("testGreetings response: " + responseText);
         GreetingsResponse greetingsResponse = objectMapper.readValue(responseText, GreetingsResponse.class);
         assertEquals(1, greetingsResponse.getId());
         assertEquals("Hola", greetingsResponse.getGreetings());
@@ -79,7 +78,7 @@ public class HomeTest {
                         .header("Accept-Language", "fr-FR")
         ).andExpect(status().isOk()).andReturn().getResponse();
         String responseText = response.getContentAsString();
-        LOG.info("testGreetings response: " + responseText);
+        log.info("testGreetings response: " + responseText);
         GreetingsResponse greetingsResponse = objectMapper.readValue(responseText, GreetingsResponse.class);
         assertEquals(1, greetingsResponse.getId());
         assertEquals("Hello", greetingsResponse.getGreetings());

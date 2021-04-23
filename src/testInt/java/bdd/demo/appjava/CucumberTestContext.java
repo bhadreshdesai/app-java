@@ -1,7 +1,6 @@
 package bdd.demo.appjava;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -9,10 +8,9 @@ import java.util.Map;
 
 import static java.lang.ThreadLocal.withInitial;
 
+@Slf4j
 public enum CucumberTestContext {
     CONTEXT;
-
-    private static final Logger LOG = LoggerFactory.getLogger(CucumberTestContext.class);
 
     private static final String REQUEST = "REQUEST";
     private static final String RESPONSE = "RESPONSE";
@@ -35,16 +33,16 @@ public enum CucumberTestContext {
         return clazz.cast(testContextMap().get(key));
     }
 
-    public void setResponse(ResponseEntity<String> response) {
-        set(RESPONSE, response);
-    }
-
     public ResponseEntity<String> getResponse() {
         return get(RESPONSE, ResponseEntity.class);
     }
 
+    public void setResponse(ResponseEntity<String> response) {
+        set(RESPONSE, response);
+    }
+
     public void reset() {
-        LOG.info("------------- TEST CONTEXT RESET -------------");
+        log.info("------------- TEST CONTEXT RESET -------------");
         testContextMap().clear();
     }
 }

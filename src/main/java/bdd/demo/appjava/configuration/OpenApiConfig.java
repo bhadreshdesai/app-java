@@ -11,8 +11,7 @@ public class OpenApiConfig {
      * Without this the Generated server url is http:// instead of https:// See
      * https://github.com/springdoc/springdoc-openapi/issues/118#issuecomment-615306836
      * for more details
-     * 
-     * @return
+     *
      */
     // @Bean
     // public OpenAPI openAPI() {

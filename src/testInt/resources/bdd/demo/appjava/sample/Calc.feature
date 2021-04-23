@@ -7,7 +7,7 @@ Feature: Calculator
     Given I have a calculator
     When I add -2 and 3
     Then the result should be 1
-   
+
   Scenario: Add two numbers 10 & 15
     Given I have a calculator
     When I add 10 and 15

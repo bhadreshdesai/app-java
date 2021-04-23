@@ -11,10 +11,10 @@ import java.time.LocalDate;
 @lombok.NoArgsConstructor
 @Entity
 public class Employee {
+    LocalDate dob;
+    Gender gender;
     @Id
     private Long id;
     private String firtName;
     private String lastName;
-    LocalDate dob;
-    Gender gender;
 }

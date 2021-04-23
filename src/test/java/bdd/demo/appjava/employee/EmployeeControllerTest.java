@@ -1,9 +1,8 @@
 package bdd.demo.appjava.employee;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -20,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(EmployeeController.class)
+@Slf4j
 public class EmployeeControllerTest {
-    private static final Logger logger = LoggerFactory.getLogger(EmployeeControllerTest.class);
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
@@ -38,13 +37,13 @@ public class EmployeeControllerTest {
         final MvcResult mvcResult = this.mockMvc.perform(post(APIPATH_EMPLOYEES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee))
-                )
+        )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location","http://localhost"+ APIPATH_EMPLOYEES + "/1"))
+                .andExpect(header().string("Location", "http://localhost" + APIPATH_EMPLOYEES + "/1"))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andReturn();
-        logger.info(mvcResult.getResponse().getContentAsString());
+        log.info(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -58,7 +57,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.dob", is("1970-11-30")))
                 .andExpect(jsonPath("$.gender", is("MALE")))
                 .andReturn();
-        logger.info(mvcResult.getResponse().getContentAsString());
+        log.info(mvcResult.getResponse().getContentAsString());
     }
 
 }
