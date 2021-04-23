@@ -32,6 +32,8 @@ idea {
 
 configurations {
 	compileOnly.extendsFrom annotationProcessor
+	testCompileOnly.extendsFrom testAnnotationProcessor
+	testIntCompileOnly.extendsFrom testIntAnnotationProcessor
 	testIntImplementation.extendsFrom implementation
 	testIntRuntimeOnly.extendsFrom runtimeOnly
 }
@@ -40,10 +42,11 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	// Annotation, CompileOnly and Development only dependencies
 	annotationProcessor 'org.projectlombok:lombok'
-	compileOnly 'org.projectlombok:lombok'
+	//compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Main application dependencies
@@ -57,15 +60,17 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 	// Unit test dependencies
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	//testCompileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// Integration test dependencies
+	testIntAnnotationProcessor 'org.projectlombok:lombok'
 	testIntImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testIntImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
 	testIntImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
 	testIntImplementation "io.cucumber:cucumber-spring:${versions.cucumber}"
 }
-
 task testInt(type: Test) {
 	description = 'Runs integration tests.'
 	group = 'verification'

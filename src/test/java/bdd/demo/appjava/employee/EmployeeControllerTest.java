@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 
+import static bdd.demo.appjava.employee.Constants.APIPATH_EMPLOYEES;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,8 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeControllerTest.class);
-
-    private static final String URL = "/api/employees";
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
@@ -36,13 +35,13 @@ public class EmployeeControllerTest {
     @Test
     public void testPost() throws Exception {
         Employee employee = Employee.builder().firtName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
-        final MvcResult mvcResult = this.mockMvc.perform(post(URL)
+        final MvcResult mvcResult = this.mockMvc.perform(post(APIPATH_EMPLOYEES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location","http://localhost/v1/employees/1"))
+                .andExpect(header().string("Location","http://localhost"+ APIPATH_EMPLOYEES + "/1"))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andReturn();
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -50,7 +49,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void testGet() throws Exception {
-        final MvcResult mvcResult = this.mockMvc.perform(get(URL + "/1"))
+        final MvcResult mvcResult = this.mockMvc.perform(get(APIPATH_EMPLOYEES + "/1"))
                 //.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

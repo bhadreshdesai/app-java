@@ -1,11 +1,8 @@
 package bdd.demo.appjava.home;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +15,8 @@ import static bdd.demo.appjava.utils.MessageTranslator.I18N;
 @Tag(name = "Home")
 @RestController
 @RequestMapping(path = "/home")
+@Slf4j
 public class HomeController {
-    private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
     @Value("${app.name}")
     private String name;
@@ -30,7 +27,7 @@ public class HomeController {
 
     @GetMapping(value = "/about", produces = MediaType.APPLICATION_JSON_VALUE)
     public AboutResponse about() {
-        LOG.info("Home.about called");
+        log.info("Home.about called");
         return AboutResponse.builder().name(name).shortname(shortname).version(version).build();
     }
 
@@ -40,8 +37,8 @@ public class HomeController {
             //, @RequestHeader(value = "accept-language") String language
             , Locale locale
             , @RequestParam Optional<String> firstName, @RequestParam Optional<String> lastName, @RequestParam(defaultValue = "good") String mood) {
-        LOG.info("Home.greetings called");
-        LOG.info(locale.toString());
+        log.info("Home.greetings called");
+        log.info(locale.toString());
         return GreetingsResponse.builder().id(id).greetings(I18N("greetings")).mood(I18N("mood", new Object[]{mood})).serverTime(LocalDateTime.now()).build();
     }
 

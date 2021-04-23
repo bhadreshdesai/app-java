@@ -1,16 +1,10 @@
 package bdd.demo.appjava.home;
 
-import bdd.demo.appjava.configuration.CustomMessageSourceConfiguration;
 import bdd.demo.appjava.utils.MessageTranslator;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
@@ -27,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Import MessageTranslator so the message translation works in the Controller unit test.
 @Import(MessageTranslator.class)
 public class HomeControllerTest {
-    private static final Logger LOG = LoggerFactory.getLogger(HomeControllerTest.class);
 
     @Autowired
     private MockMvc mockMvc;

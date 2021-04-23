@@ -4,8 +4,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,8 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
+@Slf4j
 public class EmployeeStepDef  {
-    private static final Logger LOG = LoggerFactory.getLogger(EmployeeStepDef.class);
     @LocalServerPort
     private int port;
     TestRestTemplate restTemplate = new TestRestTemplate();
@@ -30,13 +30,13 @@ public class EmployeeStepDef  {
     public void user_wants_to_create_an_employee_with_the_following_attributes(DataTable dataTable) throws JSONException {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
         String url = createURLWithPort("/students/Student1/courses/Course1");
-        LOG.info(url);
+        log.info(url);
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET, entity, String.class);
         String actual = response.getBody();
         String expected = "{id:Course1,name:Spring,description:10Steps}";
-        LOG.info(actual);
+        log.info(actual);
         //JSONAssert.assertEquals(expected, response.getBody(), false);
     }
 
