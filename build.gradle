@@ -118,7 +118,8 @@ jacocoTestCoverageVerification {
 			element = 'CLASS'
 			excludes = [
 					'bdd.demo.appjava.DemoApplication',
-					'bdd.demo.appjava.configuration.OpenApiConfig'
+					'bdd.demo.appjava.configuration.OpenApiConfig',
+					'bdd.*.Constants'
 			]
 			limit {
 				counter = 'INSTRUCTION'

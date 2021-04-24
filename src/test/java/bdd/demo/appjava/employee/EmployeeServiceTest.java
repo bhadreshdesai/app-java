@@ -67,19 +67,15 @@ public class EmployeeServiceTest {
         assertThat(employee.get().getId()).isEqualTo(ID);
     }
 
+    // https://www.baeldung.com/mockito-void-methods
     @Test
     void deleteByIdTest() {
         log.info("Delete employee by ID");
         final Long ID = 999L;
+        doNothing().when(employeeRepository).deleteById(employeeId.capture());
         employeeService.deleteById(ID);
-        //verify(employeeRepository, times(1)).deleteById(employeeId.capture());
-        //assertThat(employeeArgumentCaptor.getValue().getId()).isEqualTo(ID);
-        //Void n = null;
-        //Optional<Employee> employeeReturn = Optional.of(Employee.builder().id(ID).build());
-        //when(employeeRepository.deleteById(ID)).thenReturn(employeeReturn);
-        //Optional<Employee> employee = employeeService.getById(ID);
-        //assertThat(employee.isPresent());
-        //assertThat(employee.get().getId()).isEqualTo(ID);
+        verify(employeeRepository, times(1)).deleteById(ID);
+        assertThat(employeeId.getValue()).isEqualTo(ID);
     }
 
 }
