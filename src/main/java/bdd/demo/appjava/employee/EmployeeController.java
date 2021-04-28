@@ -2,13 +2,14 @@ package bdd.demo.appjava.employee;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.util.Optional;
 
 import static bdd.demo.appjava.employee.Constants.APIPATH_EMPLOYEES;
 import static bdd.demo.appjava.employee.Constants.TAG_EMPLOYEES;
@@ -19,12 +20,13 @@ import static bdd.demo.appjava.employee.Constants.TAG_EMPLOYEES;
 @RequestMapping(path = APIPATH_EMPLOYEES)
 @Slf4j
 public class EmployeeController {
+    @Autowired
+    EmployeeService employeeService;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Employee> create(@RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
         log.info(employee.toString());
-        //Long id = employeeService.create(employee);
-        Long id = 1L;
+        Long id = employeeService.create(employee);
         employee.setId(id);
         final URI uri = uriComponentsBuilder.path(APIPATH_EMPLOYEES + "/{id}")
                 .build(id);
@@ -36,8 +38,7 @@ public class EmployeeController {
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Employee> getById(@PathVariable("id") Long id) {
-        //Employee employee = employeeService.getById(id);
-        Employee employee = Employee.builder().id(1L).firtName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
-        return ResponseEntity.ok(employee);
+        Optional<Employee> employee = employeeService.getById(id);
+        return ResponseEntity.of(employee);
     }
 }
