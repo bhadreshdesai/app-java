@@ -39,7 +39,7 @@ public class EmployeeControllerTest {
     @Test
     public void testPost() throws Exception {
         Long id = 1L;
-        Employee employee = Employee.builder().firtName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
+        Employee employee = Employee.builder().firstName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
         when(employeeService.create(employee)).thenReturn(id);
         final MvcResult mvcResult = this.mockMvc.perform(post(APIPATH_EMPLOYEES)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -56,13 +56,13 @@ public class EmployeeControllerTest {
     @Test
     public void testGet() throws Exception {
         Long id = 1L;
-        Optional<Employee> employee = Optional.of(Employee.builder().firtName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build());
+        Optional<Employee> employee = Optional.of(Employee.builder().firstName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build());
         when(employeeService.getById(id)).thenReturn(employee);
         final MvcResult mvcResult = this.mockMvc.perform(get(APIPATH_EMPLOYEES + "/" + id.toString()))
                 //.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.firtName", is("John")))
+                .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.lastName", is("Doe")))
                 .andExpect(jsonPath("$.dob", is("1970-11-30")))
                 .andExpect(jsonPath("$.gender", is("MALE")))
@@ -78,6 +78,17 @@ public class EmployeeControllerTest {
         this.mockMvc.perform(get(APIPATH_EMPLOYEES + "/" + id.toString()))
                 //.andDo(print())
                 .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetException() throws Exception {
+        Long id = 1L;
+        Optional<Employee> employee = Optional.empty();
+        when(employeeService.getById(id)).thenThrow(IllegalArgumentException.class);
+        this.mockMvc.perform(get(APIPATH_EMPLOYEES + "/" + id.toString()))
+                //.andDo(print())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 

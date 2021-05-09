@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,11 @@ public class EmployeeController {
     public ResponseEntity<Employee> getById(@PathVariable("id") Long id) {
         Optional<Employee> employee = employeeService.getById(id);
         return ResponseEntity.of(employee);
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        //log.info("Handled: IllegalArgumentException", ex);
+        return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
     }
 }

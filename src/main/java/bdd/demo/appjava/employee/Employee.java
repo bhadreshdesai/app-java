@@ -1,6 +1,8 @@
 package bdd.demo.appjava.employee;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
@@ -11,10 +13,11 @@ import java.time.LocalDate;
 @lombok.NoArgsConstructor
 @Entity
 public class Employee {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    private String firstName;
+    private String lastName;
     LocalDate dob;
     Gender gender;
-    @Id
-    private Long id;
-    private String firtName;
-    private String lastName;
 }
