@@ -1,9 +1,6 @@
 package bdd.demo.appjava.employee;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 //@lombok.Getter // Need getters for the Controller to convert object to json
@@ -19,5 +16,6 @@ public class Employee {
     private String firstName;
     private String lastName;
     LocalDate dob;
+    @Convert(converter=GenderConverter.class)
     Gender gender;
 }

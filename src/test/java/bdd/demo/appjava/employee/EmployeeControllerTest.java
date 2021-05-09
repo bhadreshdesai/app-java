@@ -41,9 +41,11 @@ public class EmployeeControllerTest {
         Long id = 1L;
         Employee employee = Employee.builder().firstName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
         when(employeeService.create(employee)).thenReturn(id);
+        String contentBody = objectMapper.writeValueAsString(employee);
+        log.info(contentBody);
         final MvcResult mvcResult = this.mockMvc.perform(post(APIPATH_EMPLOYEES)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(employee))
+                .content(contentBody)
         )
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -65,7 +67,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.lastName", is("Doe")))
                 .andExpect(jsonPath("$.dob", is("1970-11-30")))
-                .andExpect(jsonPath("$.gender", is("MALE")))
+                .andExpect(jsonPath("$.gender", is("M")))
                 .andReturn();
         log.info(mvcResult.getResponse().getContentAsString());
     }
