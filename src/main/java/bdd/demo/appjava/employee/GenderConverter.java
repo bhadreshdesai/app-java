@@ -1,10 +1,8 @@
 package bdd.demo.appjava.employee;
 
 import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.util.stream.Stream;
 
-@Converter(autoApply = true)
 public class GenderConverter implements AttributeConverter<Gender, String> {
  
     @Override
