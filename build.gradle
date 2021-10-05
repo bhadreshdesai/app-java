@@ -13,7 +13,7 @@ sourceCompatibility = '11'
 
 def versions = [
 		openapi: '1.5.4',
-		cucumber: '6.9.1'
+		cucumber: '6.11.0'
 ]
 
 sourceSets {
