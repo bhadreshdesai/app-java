@@ -100,9 +100,9 @@ jacocoTestReport {
 	}
 
 	reports {
-		xml.enabled = true
+		xml.required = true
 		// HTML report: build/reports/jacoco/test/html/index.html
-		html.enabled = true
+		html.required = true
 	}
 }
 
