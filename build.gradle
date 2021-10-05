@@ -12,7 +12,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 def versions = [
-		openapi: '1.5.4',
+		openapi: '1.5.10',
 		cucumber: '6.11.0'
 ]
 
