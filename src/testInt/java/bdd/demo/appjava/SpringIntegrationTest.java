@@ -7,7 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @CucumberContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = {
+        "spring.security.user.name=duke",
+        "spring.security.user.password=secret",
+        "spring.security.user.roles=ADMIN"
+})
 @Slf4j
 public class SpringIntegrationTest {
 

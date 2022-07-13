@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -33,7 +34,7 @@ public class HomeTest {
         MockHttpServletResponse response = this.mockMvc.perform(
                 get("/home/greetings/1")
                         .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andReturn().getResponse();
+        ).andDo(print()).andExpect(status().isOk()).andReturn().getResponse();
         String responseText = response.getContentAsString();
         log.info("testGreetings response: " + responseText);
         GreetingsResponse greetingsResponse = objectMapper.readValue(responseText, GreetingsResponse.class);

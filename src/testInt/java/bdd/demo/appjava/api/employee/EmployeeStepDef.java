@@ -1,6 +1,9 @@
 package bdd.demo.appjava.api.employee;
 
+import bdd.demo.appjava.employee.Employee;
+import bdd.demo.appjava.employee.GenderConverter;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,6 +16,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static bdd.demo.appjava.employee.Constants.APIPATH_EMPLOYEES;
+
+// https://rieckpil.de/testing-spring-boot-applications-with-rest-assured/
+
 @Slf4j
 public class EmployeeStepDef {
     TestRestTemplate restTemplate = new TestRestTemplate();
@@ -24,14 +37,29 @@ public class EmployeeStepDef {
         return "http://localhost:" + port + uri;
     }
 
+    @DataTableType
+    public Employee employeeEntryTransformer(Map<String, String> entry) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        GenderConverter genderConverter = new GenderConverter();
+        return new Employee(
+                Long.parseLong(entry.get("id")),
+                entry.get("firstName"),
+                entry.get("lastName"),
+                LocalDate.parse(entry.get("dob"), formatter),
+                genderConverter.convertToEntityAttribute(entry.get("gender"))
+        );
+    }
+
     @Given("the user wants to create an employee with the following attributes")
-    public void user_wants_to_create_an_employee_with_the_following_attributes(DataTable dataTable) throws JSONException {
-        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-        String url = createURLWithPort("/students/Student1/courses/Course1");
+    public void user_wants_to_create_an_employee_with_the_following_attributes(List<Employee> employeeList) throws JSONException {
+        String body = "{'firstName':'Jack', 'lastName': 'Jones'}";
+        HttpEntity<String> entity = new HttpEntity<String>(body, headers);
+        String url = createURLWithPort(APIPATH_EMPLOYEES);
         log.info(url);
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
-                HttpMethod.GET, entity, String.class);
+                HttpMethod.POST, entity, String.class);
+        log.info(response.toString());
         String actual = response.getBody();
         String expected = "{id:Course1,name:Spring,description:10Steps}";
         log.info(actual);

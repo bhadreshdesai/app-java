@@ -335,3 +335,11 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 [Writing Integration Tests for Rest Services with Spring Boot](https://www.springboottutorial.com/integration-testing-for-spring-boot-rest-services)
 
 [https://github.com/cucumber/cucumber-jvm/tree/main/spring](https://github.com/cucumber/cucumber-jvm/tree/main/spring)
+
+[React Typescript Login and Registration example](https://www.bezkoder.com/react-typescript-login-example/)
+
+[Spring Boot Token based Authentication with Spring Security & JWT](https://www.bezkoder.com/spring-boot-jwt-authentication/)
+
+[gs-securing-web does not use csrf](https://github.com/spring-guides/gs-securing-web/tree/main/complete)
+
+[Spring Security for Spring Boot Integration Tests - Mockito | Java techie](https://www.youtube.com/watch?v=IZFqxy5PS0k)

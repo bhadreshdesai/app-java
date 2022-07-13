@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -21,20 +22,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+
 @WebMvcTest(EmployeeController.class)
 @Slf4j
+@WithMockUser
 public class EmployeeControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
-    @MockBean
-    private EmployeeService employeeService;
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
-    public EmployeeControllerTest(MockMvc mockMvc, ObjectMapper objectMapper) {
-        this.mockMvc = mockMvc;
-        this.objectMapper = objectMapper;
-    }
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private EmployeeService employeeService;
 
     @Test
     public void testPost() throws Exception {
@@ -46,6 +48,7 @@ public class EmployeeControllerTest {
         final MvcResult mvcResult = this.mockMvc.perform(post(APIPATH_EMPLOYEES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(contentBody)
+                .with(csrf())
         )
                 .andDo(print())
                 .andExpect(status().isCreated())
