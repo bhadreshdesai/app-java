@@ -177,7 +177,7 @@ Feature: Calculator
     When I subtract 10 from 15
     Then the result should be 5
 ```
-Run the test by exexuting the following command in the gitpod terminal.
+Run the test by executing the following command in the gitpod terminal.
 ```
 ./gradlew check
 ```
@@ -343,3 +343,6 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 [gs-securing-web does not use csrf](https://github.com/spring-guides/gs-securing-web/tree/main/complete)
 
 [Spring Security for Spring Boot Integration Tests - Mockito | Java techie](https://www.youtube.com/watch?v=IZFqxy5PS0k)
+
+[Swagger Doc](http://localhost:8080/swagger-ui.html)
+[API Doc](http://localhost:8080/v3/api-docs)
