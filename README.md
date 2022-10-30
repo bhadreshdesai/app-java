@@ -340,6 +340,8 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 
 [Spring Boot Token based Authentication with Spring Security & JWT](https://www.bezkoder.com/spring-boot-jwt-authentication/)
 
+[[QUESTION] How do ACL and domain level security work?](https://www.youtube.com/watch?v=GTln3jc5_eg)
+
 [gs-securing-web does not use csrf](https://github.com/spring-guides/gs-securing-web/tree/main/complete)
 
 [Spring Security for Spring Boot Integration Tests - Mockito | Java techie](https://www.youtube.com/watch?v=IZFqxy5PS0k)
