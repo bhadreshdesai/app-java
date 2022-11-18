@@ -1,21 +1,37 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.5'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'jacoco'
-    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.24"
+	id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.25"
 	id 'idea'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
+	id 'java'
+	id 'org.springframework.boot' version '2.7.5'
 }
 
 group = 'bdd.demo.'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_17
 
 def versions = [
-		openapi: '1.5.10',
-		cucumber: '6.11.0',
+		cucumber: '7.8.1',
+		openapi: '1.6.12',
 		jjwt: '0.9.1'
 ]
+
+// jacoco exclusions
+// Provide the list of classes to be excluded for jacoco verification
+// Use ant glob pattern to exclude classes
+def jacocoExclusions = [
+		'bdd/demo/appjava/DemoApplication.class'	                 // ignore the main application
+		,'bdd/demo/appjava/configuration/OpenApiConfig.class'	 	 // ignore api specification generation class
+		,'bdd/**/Constants.class'	                                 // ignore all the constant files
+		,'bdd/demo/appjava/user/AuthController.class'				 // Temp exclude
+		,'bdd/demo/appjava/utils/JwtUtils.class'					 // Temp exclude
+]
+def excludeFromJacocoTestReport = false	                     // set this to true to exclude the classes from code coverage report also
+
+repositories {
+	mavenCentral()
+}
 
 sourceSets {
 	testInt {
@@ -32,24 +48,25 @@ idea {
 }
 
 configurations {
-	compileOnly.extendsFrom annotationProcessor
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 
-	testCompileOnly.extendsFrom testAnnotationProcessor
-	testIntCompileOnly.extendsFrom testIntAnnotationProcessor
+	// Need this to start @SpringBootTest
+	testIntImplementation {
+		extendsFrom implementation
+	}
 
-	testIntImplementation.extendsFrom implementation
-	testIntRuntimeOnly.extendsFrom runtimeOnly
+	// Need this to start @SpringBootTest
+	testIntRuntimeOnly {
+		extendsFrom runtimeOnly
+	}
 }
-
-repositories {
-	mavenCentral()
-}
-
 
 dependencies {
 	// Annotation, CompileOnly and Development only dependencies
 	annotationProcessor 'org.projectlombok:lombok'
-	//compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Main application dependencies
@@ -58,7 +75,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+
 	implementation "org.springdoc:springdoc-openapi-ui:${versions.openapi}"
 
 	// Runtime only dependencies
@@ -66,41 +83,53 @@ dependencies {
 
 	// Unit test dependencies
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// Integration test dependencies
 	testIntAnnotationProcessor 'org.projectlombok:lombok'
+	testIntCompileOnly 'org.projectlombok:lombok'
 	testIntImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testIntImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
-	testIntImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
-	testIntImplementation "io.cucumber:cucumber-spring:${versions.cucumber}"
+
+	// Cucumber dependencies
+	testIntImplementation platform("io.cucumber:cucumber-bom:${versions.cucumber}")
+	testIntImplementation "io.cucumber:cucumber-java"
+	testIntImplementation "io.cucumber:cucumber-junit-platform-engine"
+	testIntImplementation "io.cucumber:cucumber-spring"
 }
 task testInt(type: Test) {
 	description = 'Runs integration tests.'
 	group = 'verification'
+	// Always run integration test
 	outputs.upToDateWhen { false }
 	testClassesDirs = sourceSets.testInt.output.classesDirs
 	classpath = sourceSets.testInt.runtimeClasspath
+	// Run integration test after running the unit tests
 	shouldRunAfter test
-	testLogging {
-		events "passed", "skipped", "failed"
-	}
-	testLogging.showStandardStreams = true
 }
 
 tasks.withType(Test) {
 	useJUnitPlatform()
+	// Need the following to show the output when running from the console
 	testLogging {
-		events "passed", "skipped", "failed"
+		events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
 	}
-	testLogging.showStandardStreams = true
+	testLogging.showStandardStreams = false
 	finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
-
-
 jacocoTestReport {
+	afterEvaluate {
+		if (excludeFromJacocoTestReport) {
+			classDirectories.setFrom(files(classDirectories.files.collect {
+				fileTree(dir: it,
+						exclude: jacocoExclusions
+				)
+			}))
+		}
+	}
+
 	// https://stackoverflow.com/questions/19025138/gradle-how-to-generate-coverage-report-for-integration-test-using-jacoco
 	executionData {
 		tasks.withType(Test).findAll {
@@ -117,21 +146,25 @@ jacocoTestReport {
 
 jacocoTestCoverageVerification {
 	dependsOn testInt
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it,
+					exclude: jacocoExclusions
+			)
+		}))
+	}
+
 	executionData {
 		tasks.withType(Test).findAll {
 			it.jacoco.destinationFile.exists()
 		}*.jacoco.destinationFile
 	}
+
 	violationRules {
 		rule {
 			element = 'CLASS'
-			excludes = [
-					'bdd.demo.appjava.DemoApplication',
-					'bdd.demo.appjava.configuration.OpenApiConfig',
-					'bdd.*.Constants',
-					'bdd.demo.appjava.user.AuthController',
-					'bdd.demo.appjava.utils.JwtUtils'
-			]
+			excludes = jacocoExclusions
 			limit {
 				counter = 'INSTRUCTION'
 				value = 'COVEREDRATIO'
@@ -147,4 +180,9 @@ cucumberReports {
     reports = files("${buildDir}/reports/cucumber/cucumber-report.json")
 }
 
-check.dependsOn testInt, jacocoTestCoverageVerification
+check.configure {
+	// check task depends on testInt and jacocoTestCoverageVerification
+	// when you run ./gradlew check testInt and jacocoTestCoverageVerification tasks are also run
+	dependsOn testInt
+	dependsOn jacocoTestCoverageVerification
+}
