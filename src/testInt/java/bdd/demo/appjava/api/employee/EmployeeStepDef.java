@@ -41,13 +41,13 @@ public class EmployeeStepDef {
     public Employee employeeEntryTransformer(Map<String, String> entry) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         GenderConverter genderConverter = new GenderConverter();
-        return new Employee(
-                Long.parseLong(entry.get("id")),
-                entry.get("firstName"),
-                entry.get("lastName"),
-                LocalDate.parse(entry.get("dob"), formatter),
-                genderConverter.convertToEntityAttribute(entry.get("gender"))
-        );
+        return Employee.builder()
+                .id(Long.parseLong(entry.get("id")))
+                .firstName(entry.get("firstName"))
+                .lastName(entry.get("lastName"))
+                .dob(LocalDate.parse(entry.get("dob"), formatter))
+                .gender(genderConverter.convertToEntityAttribute(entry.get("gender")))
+                .build();
     }
 
     @Given("the user wants to create an employee with the following attributes")

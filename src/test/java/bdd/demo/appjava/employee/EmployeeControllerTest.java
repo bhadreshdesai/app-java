@@ -40,7 +40,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void testPost() throws Exception {
-        Long id = 1L;
+        Long id = 10L;
         Employee employee = Employee.builder().firstName("John").lastName("Doe").dob(LocalDate.of(1970, 11, 30)).gender(Gender.MALE).build();
         when(employeeService.create(employee)).thenReturn(id);
         String contentBody = objectMapper.writeValueAsString(employee);
