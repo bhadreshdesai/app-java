@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Setter
 @SuperBuilder
-public class Employee extends BaseEntity {
+public class Employee extends BaseEntity<Long> {
     private String firstName;
     private String lastName;
     LocalDate dob;
