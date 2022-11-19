@@ -15,13 +15,12 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,5 +54,6 @@ public class OpenApiTest {
         // test Paths
         Paths paths = openAPI.getPaths();
         assertThat(paths.size(), is(4));
+        assertThat(paths.keySet(), containsInAnyOrder("/api/employees", "/home/greetings/{id}", "/home/about", "/api/employees/{id}"));
     }
 }
