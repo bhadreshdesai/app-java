@@ -18,6 +18,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,9 +48,10 @@ public class OpenApiTest {
 
         // test Tags
         List<Tag> tags = openAPI.getTags();
-        assertThat(tags.size(), is(1));
-        Tag tag = tags.get(0);
-        assertThat(tag.getName(), is("Employees"));
+        assertThat(tags.size(), is(2));
+        assertThat(tags, containsInAnyOrder(
+                hasProperty("name", is("Employees")),
+                hasProperty("name", is("Home"))));
 
         // test Paths
         Paths paths = openAPI.getPaths();

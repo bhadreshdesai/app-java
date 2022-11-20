@@ -13,7 +13,7 @@ import java.util.Optional;
 import static bdd.demo.appjava.home.Constants.*;
 import static bdd.demo.appjava.utils.MessageTranslator.I18N;
 
-@Tag(name = TAG_HOME)
+@Tag(name = TAG_HOME, description = DESC_HOME_API)
 @RestController
 @RequestMapping(path = APIPATH_HOME)
 @Slf4j
