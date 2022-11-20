@@ -1,10 +1,14 @@
 package bdd.demo.appjava.employee;
 
 import bdd.demo.appjava.base.BaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
 //@lombok.Getter // Need getters for the Controller to convert object to json

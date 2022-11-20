@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
     @Value("${app.name}")
     private String appName;
+
     /***
      * Set the server url to / so it the Try it out from browser with https works.
      * Without this the Generated server url is http:// instead of https:// See

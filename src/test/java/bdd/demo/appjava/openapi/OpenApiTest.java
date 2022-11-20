@@ -13,8 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -47,15 +49,30 @@ public class OpenApiTest {
         OpenAPI openAPI = objectMapper.readValue(responseText, OpenAPI.class);
 
         // test Tags
+        List expectedTags = Arrays.asList(
+                hasProperty("name", is("Employees"))
+                , hasProperty("name", is("Home"))
+                , hasProperty("name", is("Roles"))
+                , hasProperty("name", is("Users"))
+        );
         List<Tag> tags = openAPI.getTags();
-        assertThat(tags.size(), is(2));
-        assertThat(tags, containsInAnyOrder(
-                hasProperty("name", is("Employees")),
-                hasProperty("name", is("Home"))));
+        assertThat(tags.size(), is(expectedTags.size()));
+        assertThat(tags, containsInAnyOrder(expectedTags));
 
         // test Paths
+        List expectedPaths = Arrays.asList(
+                equalTo("/home/about")
+                , equalTo("/api/employees")
+                , equalTo("/api/employees/{id}")
+                , equalTo("/home/greetings/{id}")
+                , equalTo("/api/roles")
+                , equalTo("/api/roles/{id}")
+                , equalTo("/api/users")
+                , equalTo("/api/users/{id}")
+        );
+
         Paths paths = openAPI.getPaths();
-        assertThat(paths.size(), is(4));
-        assertThat(paths.keySet(), containsInAnyOrder("/api/employees", "/home/greetings/{id}", "/home/about", "/api/employees/{id}"));
+        assertThat(paths.size(), is(expectedPaths.size()));
+        assertThat(paths.keySet(), containsInAnyOrder(expectedPaths));
     }
 }

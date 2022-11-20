@@ -4,7 +4,7 @@ import javax.persistence.AttributeConverter;
 import java.util.stream.Stream;
 
 public class GenderConverter implements AttributeConverter<Gender, String> {
- 
+
     @Override
     public String convertToDatabaseColumn(Gender gender) {
         if (gender == null) {
@@ -20,8 +20,8 @@ public class GenderConverter implements AttributeConverter<Gender, String> {
         }
 
         return Stream.of(Gender.values())
-          .filter(c -> c.toString().equals(code))
-          .findFirst()
-          .orElseThrow(IllegalArgumentException::new);
+                .filter(c -> c.toString().equals(code))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

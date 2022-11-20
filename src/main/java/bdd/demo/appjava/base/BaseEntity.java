@@ -11,7 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-@EqualsAndHashCode // Need equals implementation for the mock to work when(employeeService.create(employee)).thenReturn(id);
+// Need equals implementation for the mock to work when(employeeService.create(employee)).thenReturn(id);
+@EqualsAndHashCode
 @Getter
 @MappedSuperclass
 @NoArgsConstructor
@@ -19,6 +20,6 @@ import javax.persistence.MappedSuperclass;
 @SuperBuilder
 public abstract class BaseEntity<ID> {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private ID id;
 }
