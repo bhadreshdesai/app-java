@@ -1,13 +1,14 @@
 package bdd.demo.appjava.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-public class BaseService<E extends BaseEntity<ID>, ID, R extends JpaRepository<E, ID>> {
+public class BaseService<E extends BaseEntity<ID>, ID, R extends PagingAndSortingRepository<E, ID>> {
     @Autowired
     private R repository;
 
@@ -18,7 +19,12 @@ public class BaseService<E extends BaseEntity<ID>, ID, R extends JpaRepository<E
     }
 
     @Transactional
-    public E update(E entity) {
+    public E update(ID id, E entity) {
+        Optional<E> existingEntity = repository.findById(id);
+        if(!existingEntity.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        entity.setId(id);
         return repository.save(entity);
     }
 

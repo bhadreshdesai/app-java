@@ -51,7 +51,8 @@ public class EmployeeServiceTest {
         Employee employee = Employee.builder().id(ID).build();
         Employee employeeReturn = Employee.builder().id(ID).build();
         when(employeeRepository.save(employee)).thenReturn(employeeReturn);
-        employeeService.update(employee);
+        when(employeeRepository.findById(ID)).thenReturn(Optional.of(employeeReturn));
+        employeeService.update(ID, employee);
         verify(employeeRepository, times(1)).save(employeeArgumentCaptor.capture());
         assertThat(employeeArgumentCaptor.getValue().getId()).isEqualTo(ID);
     }
