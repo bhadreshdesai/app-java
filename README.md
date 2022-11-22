@@ -346,5 +346,7 @@ Check the cucumber report in `build/reports/cucumber/cucumber-html-reports/overv
 
 [Spring Security for Spring Boot Integration Tests - Mockito | Java techie](https://www.youtube.com/watch?v=IZFqxy5PS0k)
 
+[53 Securing Your Domain Objects with Spring Security ACL](https://www.youtube.com/watch?v=_M6GZhh-R8c)
+
 [Swagger Doc](http://localhost:8080/swagger-ui.html)
 [API Doc](http://localhost:8080/v3/api-docs)

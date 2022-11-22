@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface BaseApi<E extends BaseEntity<ID>, ID, R extends JpaRepository<E, ID>> {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<E> create(@RequestBody E entity, UriComponentsBuilder uriComponentsBuilder);
+    public ResponseEntity<E> create(@RequestBody E entity, HttpServletRequest request);
 
     @Operation(summary = "Get by id")
     @ApiResponses(value = {
